@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junza Chat Systems | WhatsApp Chatbots for African Businesses</title>
+  <meta name="description" content="We build WhatsApp chatbots for restaurants, clinics, hotels, car dealers, churches, schools and tourism brands across Zimbabwe. Never miss a booking again." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .chip { padding:9px 14px;border-radius:999px;border:1.5px solid rgba(39,212,95,.3);background:rgba(39,212,95,.08);color:#1a5c2a;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap; }
+    .chip:hover { background:rgba(39,212,95,.18);border-color:rgba(39,212,95,.5); }
+    #sim-chips { display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:#f0f0f0;border-top:1px solid #ddd; }
+    #sim-body { height:280px;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:8px; }
+    .typing-indicator { display:flex;align-items:center;gap:4px;padding:10px 14px; }
+    .nav-links a.active { color:var(--text); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">J</div>
+        <div class="logo-text">
+          <div>Junza Chat Systems</div>
+          <div class="logo-sub">WhatsApp bots for African businesses</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#industries">Industries</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot%20for%20my%20business" target="_blank">Get Your Bot</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow animate-up">⚡ Zimbabwe's WhatsApp Bot Service</div>
+        <h1 class="animate-up delay-1">Your business is losing customers <span class="accent">every time WhatsApp goes unanswered.</span></h1>
+        <p class="lead animate-up delay-2">We build a WhatsApp chatbot for your business that answers customers instantly — 24 hours a day. No more missed bookings, lost leads or unanswered enquiries while you're busy.</p>
+        <div class="hero-actions animate-up delay-3">
+          <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot%20for%20my%20business" target="_blank">Get My Bot Built</a>
+          <a class="btn btn-ghost" href="#how-it-works">See How It Works</a>
+        </div>
+        <div class="proof animate-up delay-4">
+          <div class="proof-item"><strong>Live in 3–5 days</strong>Your bot is set up, customised and running on your existing WhatsApp number fast.</div>
+          <div class="proof-item"><strong>No tech skills needed</strong>We handle everything. You just respond to the leads your bot sends you.</div>
+          <div class="proof-item"><strong>Works on WhatsApp</strong>Your customers already use it. No app downloads, no new accounts, no friction.</div>
+          <div class="proof-item"><strong>Try it free first</strong>See a live demo bot before you pay anything.</div>
+        </div>
+      </div>
+      <div class="mock-wrap animate-up delay-2">
+        <div class="phone">
+          <div class="screen">
+            <div class="wa-head">Junza Demo Bot</div>
+            <div id="sim-body"></div>
+            <div id="sim-chips"></div>
+          </div>
+        </div>
+        <div class="demo-keyword" style="margin-top:14px">
+          👆 This is what your customers will experience — click to try it
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">The real cost of not having a bot</div>
+        <h2>Every unanswered WhatsApp message is a sale walking out the door.</h2>
+        <p class="sub">You're already using WhatsApp to run your business. But when you're with customers, in a meeting or offline — who's answering?</p>
+      </div>
+      <div class="cards">
+        <div class="card animate-up">
+          <div class="card-icon">😤</div>
+          <h3>Customers don't wait</h3>
+          <p>If they don't get a reply quickly, they move on to your competitor. A bot replies in seconds — every time, no exceptions.</p>
+        </div>
+        <div class="card animate-up delay-1">
+          <div class="card-icon">🔁</div>
+          <h3>You're answering the same questions every day</h3>
+          <p>"What are your hours?" "Do you have space this Saturday?" "What's on the menu?" Your bot handles all of it, so you don't have to.</p>
+        </div>
+        <div class="card animate-up delay-2">
+          <div class="card-icon">💸</div>
+          <h3>Missed messages = missed money</h3>
+          <p>One missed booking a week at $30 is over $1,500 a year. A bot that costs $150 once pays for itself in the first month.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">How it works</div>
+        <h2>We build it. We set it up. You start getting leads.</h2>
+        <p class="sub">There's nothing technical for you to do. We handle the entire setup on your existing WhatsApp Business number.</p>
+      </div>
+      <div class="steps">
+        <div class="step animate-up">
+          <div class="step-num">1</div>
+          <h3>Try a free demo first</h3>
+          <p>Message us and we'll show you a live demo built for your type of business — restaurants see a booking bot, clinics see an appointment bot, and so on. You see exactly what your customers will experience before you spend anything.</p>
+        </div>
+        <div class="step animate-up delay-1">
+          <div class="step-num">2</div>
+          <h3>We customise and go live</h3>
+          <p>We set up your bot with your business name, services, prices, hours and contact details. It runs on your existing WhatsApp number. Your customers won't notice anything changed — they'll just start getting instant replies.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="industries">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">Built for your business</div>
+        <h2>We've built bots for 7 types of businesses in Zimbabwe.</h2>
+        <p class="sub">Each bot is designed around how your customers behave and what they need — not a generic bot that barely understands your industry.</p>
+      </div>
+      <div class="industry-grid">
+        <a class="industry-link animate-up" href="restaurant-bot.html">
+          <span class="emoji">🍽</span>
+          <span class="label">Restaurant</span>
+          <span class="desc">Take bookings, share your menu, handle takeaway orders</span>
+        </a>
+        <a class="industry-link animate-up delay-1" href="clinic-bot.html">
+          <span class="emoji">🏥</span>
+          <span class="label">Clinic</span>
+          <span class="desc">Book appointments, share hours, answer patient questions</span>
+        </a>
+        <a class="industry-link animate-up delay-2" href="hotel-bot.html">
+          <span class="emoji">🏨</span>
+          <span class="label">Hotel or Lodge</span>
+          <span class="desc">Capture room enquiries, share rates, confirm reservations</span>
+        </a>
+        <a class="industry-link animate-up delay-3" href="car-dealer-bot.html">
+          <span class="emoji">🚗</span>
+          <span class="label">Car Dealer</span>
+          <span class="desc">Qualify buyers, share your stock, book test drives</span>
+        </a>
+        <a class="industry-link animate-up" href="church-bot.html">
+          <span class="emoji">⛪</span>
+          <span class="label">Church</span>
+          <span class="desc">Share service times, register for events, direct members</span>
+        </a>
+        <a class="industry-link animate-up delay-1" href="school-bot.html">
+          <span class="emoji">🎓</span>
+          <span class="label">School</span>
+          <span class="desc">Handle admissions, answer fee questions, support parents</span>
+        </a>
+        <a class="industry-link animate-up delay-2" href="tourism-bot.html">
+          <span class="emoji">🌍</span>
+          <span class="label">Tourism</span>
+          <span class="desc">Share packages, capture booking requests, send quotes</span>
+        </a>
+        <div class="industry-link animate-up delay-3" style="opacity:.5;cursor:default;justify-content:center;align-items:center;text-align:center">
+          <span class="label" style="font-size:13px;color:var(--muted)">Don't see your industry?<br>Message us — we can help.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">Before and after</div>
+        <h2>What changes when your bot goes live.</h2>
+      </div>
+      <div class="copy-grid">
+        <div class="copy-box animate-up">
+          <h3>Before Junza</h3>
+          <div class="bad">Customers message and wait hours for a reply</div>
+          <div class="bad">You spend your day answering the same questions</div>
+          <div class="bad">Bookings and leads are lost when you're unavailable</div>
+          <div class="bad">No record of who enquired or what they needed</div>
+        </div>
+        <div class="copy-box animate-up delay-1">
+          <h3>After Junza</h3>
+          <div class="good">Every customer gets an instant reply — day or night</div>
+          <div class="good">FAQs, menus, prices and directions are all automated</div>
+          <div class="good">Bookings and leads are captured while you're busy</div>
+          <div class="good">Every enquiry is recorded so nothing slips through</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">Pricing</div>
+        <h2>Simple, honest pricing.</h2>
+        <p class="sub">One setup fee. Optional monthly support. No hidden costs.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card animate-up">
+          <div class="plan-badge">Try It Free</div>
+          <div class="amount">Free</div>
+          <div class="amount-note">No commitment needed</div>
+          <ul>
+            <li>Live demo for your industry</li>
+            <li>WhatsApp walkthrough with our team</li>
+            <li>See your bot before you buy</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%27d%20like%20to%20see%20a%20free%20demo" target="_blank">Request Free Demo</a>
+        </div>
+        <div class="price-card featured animate-up delay-1">
+          <div class="plan-badge">⭐ Get Your Bot Built</div>
+          <div class="amount">$150</div>
+          <div class="amount-note">One-time setup — yours to keep</div>
+          <ul>
+            <li>Bot built for your specific business</li>
+            <li>Your name, services, hours and location</li>
+            <li>Runs on your existing WhatsApp number</li>
+            <li>Live in 3–5 days</li>
+            <li>1 week of fixes included</li>
+          </ul>
+          <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20to%20get%20my%20bot%20built" target="_blank">Get My Bot Built</a>
+        </div>
+        <div class="price-card animate-up delay-2">
+          <div class="plan-badge">Monthly Support</div>
+          <div class="amount">$35</div>
+          <div class="amount-note">Per month — cancel anytime</div>
+          <ul>
+            <li>Update menus, services or prices anytime</li>
+            <li>Send broadcast messages to customers</li>
+            <li>Add new flows as your business grows</li>
+            <li>Priority support from our team</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20tell%20me%20about%20monthly%20support" target="_blank">Ask About This</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta animate-up">
+    <div class="wrap">
+      <div class="kicker">Ready to stop missing customers?</div>
+      <h2>Get your bot up and running this week.</h2>
+      <p>Message us now and we'll show you a free demo. No pressure, no commitment — just a look at what your customers will experience when your bot is live.</p>
+      <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot%20for%20my%20business" target="_blank">Message Us on WhatsApp →</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© 2025 Junza Chat Systems — WhatsApp bots for African businesses.</span>
+      <a href="https://wa.me/263779614436" target="_blank" style="color:var(--green)">+263 77 961 4436</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
