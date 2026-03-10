@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junza Chat Systems | WhatsApp Chatbots for African Businesses</title>
+  <meta name="description" content="Junza builds WhatsApp chatbots for restaurants, clinics, hotels, car dealers, churches, schools and tourism brands across Zimbabwe and Africa." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Chip buttons for the simulator */
+    .chip {
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(39,212,95,.3);
+      background: rgba(39,212,95,.08);
+      color: #1a5c2a;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .chip:hover { background: rgba(39,212,95,.18); border-color: rgba(39,212,95,.5); }
+    #sim-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 12px; background: #f0f0f0; border-top: 1px solid #ddd; }
+    #sim-body { height: 280px; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .typing-indicator { display: flex; align-items: center; gap: 4px; padding: 10px 14px; }
+    .nav-links a.active { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">J</div>
+        <div class="logo-text">
+          <div>Junza Chat Systems</div>
+          <div class="logo-sub">WhatsApp bots for African businesses</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#templates">Templates</a>
+        <a href="#trial">Trials</a>
+        <a href="#messaging">Messaging</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot" target="_blank">Book Demo</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow animate-up">⚡ Built for Zimbabwe. Ready for scale.</div>
+        <h1 class="animate-up delay-1">Your WhatsApp is <span class="accent">losing you money</span> every day.</h1>
+        <p class="lead animate-up delay-2">Junza builds template-based WhatsApp chatbots for restaurants, clinics, hotels, car dealers, churches, schools and tourism brands. Faster replies. More leads. More bookings. Less manual chaos.</p>
+        <div class="hero-actions animate-up delay-3">
+          <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20to%20launch%20my%20bot" target="_blank">Get My Bot Built</a>
+          <a class="btn btn-ghost" href="#templates">See Templates</a>
+        </div>
+        <div class="proof animate-up delay-4">
+          <div class="proof-item"><strong>Template-based rollout</strong>Proven structures deployed fast — no rebuilding from zero.</div>
+          <div class="proof-item"><strong>Cashflow-focused</strong>Built to capture bookings, leads and enquiries.</div>
+          <div class="proof-item"><strong>WhatsApp-first</strong>Your customers already live there. No app gymnastics.</div>
+          <div class="proof-item"><strong>Easy to trial</strong>Clients test a demo before committing.</div>
+        </div>
+      </div>
+
+      <!-- Live simulator -->
+      <div class="mock-wrap animate-up delay-2">
+        <div class="phone">
+          <div class="screen">
+            <div class="wa-head">Junza Demo Bot</div>
+            <div id="sim-body"></div>
+            <div id="sim-chips"></div>
+          </div>
+        </div>
+        <div class="demo-keyword" style="margin-top:14px">
+          Message&nbsp;<strong id="keyword-cycle">RESTAURANT</strong>&nbsp;to try any demo live
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">The business case</div>
+        <h2>Your problem is not "messages." It is lost revenue.</h2>
+        <p class="sub">Zimbabwean businesses already use WhatsApp as a front desk, booking desk and support line. Every ignored message is a missed customer.</p>
+      </div>
+      <div class="cards">
+        <div class="card animate-up">
+          <div class="card-icon">⏰</div>
+          <h3>24/7 replies</h3>
+          <p>Customers message late, early, and during your busiest hours. Bots answer instantly — no overtime required.</p>
+        </div>
+        <div class="card animate-up delay-1">
+          <div class="card-icon">🔁</div>
+          <h3>Less repetitive work</h3>
+          <p>Hours, prices, directions, menus, services and FAQs stop eating staff time every single day.</p>
+        </div>
+        <div class="card animate-up delay-2">
+          <div class="card-icon">💰</div>
+          <h3>Faster route to cashflow</h3>
+          <p>A practical service for real businesses — not startup cosplay. Built to generate revenue from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATES -->
+  <section id="templates">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">Template library</div>
+        <h2>One master system. Seven focused industry bots.</h2>
+        <p class="sub">Each industry gets its own page, message, and demo flow — so your prospects feel like it was built just for them.</p>
+      </div>
+      <div class="industry-grid">
+        <a class="industry-link animate-up" href="restaurant-bot.html">
+          <span class="emoji">🍽</span>
+          <span class="label">Restaurant Bot</span>
+          <span class="desc">Bookings, menu, takeaway</span>
+        </a>
+        <a class="industry-link animate-up delay-1" href="clinic-bot.html">
+          <span class="emoji">🏥</span>
+          <span class="label">Clinic Bot</span>
+          <span class="desc">Appointments, FAQs, hours</span>
+        </a>
+        <a class="industry-link animate-up delay-2" href="hotel-bot.html">
+          <span class="emoji">🏨</span>
+          <span class="label">Hotel Bot</span>
+          <span class="desc">Rooms, rates, reservations</span>
+        </a>
+        <a class="industry-link animate-up delay-3" href="car-dealer-bot.html">
+          <span class="emoji">🚗</span>
+          <span class="label">Car Dealer Bot</span>
+          <span class="desc">Leads, test drives, stock</span>
+        </a>
+        <a class="industry-link animate-up" href="church-bot.html">
+          <span class="emoji">⛪</span>
+          <span class="label">Church Bot</span>
+          <span class="desc">Services, events, members</span>
+        </a>
+        <a class="industry-link animate-up delay-1" href="school-bot.html">
+          <span class="emoji">🎓</span>
+          <span class="label">School Bot</span>
+          <span class="desc">Admissions, fees, parents</span>
+        </a>
+        <a class="industry-link animate-up delay-2" href="tourism-bot.html">
+          <span class="emoji">🌍</span>
+          <span class="label">Tourism Bot</span>
+          <span class="desc">Packages, dates, quotes</span>
+        </a>
+        <div class="industry-link animate-up delay-3" style="opacity:.4;cursor:default;justify-content:center;align-items:center">
+          <span class="label" style="font-size:13px;color:var(--muted)">More coming…</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIAL -->
+  <section id="trial">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">How trials work</div>
+        <h2>Let prospects touch the thing.</h2>
+        <p class="sub">That is how you sell bots without a long sales pitch or slide deck.</p>
+      </div>
+      <div class="steps">
+        <div class="step animate-up">
+          <div class="step-num">1</div>
+          <h3>Demo bot</h3>
+          <p>A prospect clicks a WhatsApp link and tries a version made for their industry. Restaurant owners see booking flows. Clinics see appointment flows. It clicks instantly.</p>
+        </div>
+        <div class="step animate-up delay-1">
+          <div class="step-num">2</div>
+          <h3>Low-risk pilot</h3>
+          <p>Offer a 14-day pilot on their own WhatsApp Business setup. Enough time to prove value, not enough time to become their unpaid intern.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MESSAGING -->
+  <section id="messaging">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">Sharper messaging</div>
+        <h2>Lead with money lost and money gained.</h2>
+        <p class="sub">Businesses buy outcomes, not chatbot poetry. Here is the difference.</p>
+      </div>
+      <div class="copy-grid">
+        <div class="copy-box animate-up">
+          <h3>Weak copy</h3>
+          <div class="bad">Automate your WhatsApp.</div>
+          <div class="bad">Build intelligent chatbots.</div>
+          <div class="bad">Improve customer engagement.</div>
+        </div>
+        <div class="copy-box animate-up delay-1">
+          <h3>Strong copy</h3>
+          <div class="good">Turn WhatsApp into your 24/7 sales assistant.</div>
+          <div class="good">Every unanswered message is a customer going to your competitor.</div>
+          <div class="good">Capture bookings, leads and orders while your team is busy.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-header animate-up">
+        <div class="kicker">Pricing</div>
+        <h2>Keep buying simple.</h2>
+        <p class="sub">SMEs respond to clarity. Three options. No confusion.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card animate-up">
+          <div class="plan-badge">Demo</div>
+          <div class="amount">Free</div>
+          <div class="amount-note">Try a template bot</div>
+          <ul>
+            <li>Industry demo flow</li>
+            <li>WhatsApp consultation</li>
+            <li>Live examples</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20to%20try%20a%20demo%20bot" target="_blank">Try Demo</a>
+        </div>
+        <div class="price-card featured animate-up delay-1">
+          <div class="plan-badge">⭐ Starter Setup</div>
+          <div class="amount">$150</div>
+          <div class="amount-note">One-time setup fee</div>
+          <ul>
+            <li>1 industry bot template</li>
+            <li>Basic customization</li>
+            <li>Launch support</li>
+            <li>7-day bug fixes</li>
+          </ul>
+          <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20the%20Starter%20Setup" target="_blank">Get Started</a>
+        </div>
+        <div class="price-card animate-up delay-2">
+          <div class="plan-badge">Managed</div>
+          <div class="amount">$35</div>
+          <div class="amount-note">Per month</div>
+          <ul>
+            <li>Ongoing updates</li>
+            <li>Broadcast support</li>
+            <li>Content changes</li>
+            <li>Priority support</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20the%20Managed%20plan" target="_blank">Ask About Managed</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta animate-up">
+    <div class="wrap">
+      <div class="kicker">Next move</div>
+      <h2>Sell the first 10 bots. Then scale the machine.</h2>
+      <p>Junza does not need to pretend to be a giant software empire on day one. It needs to solve one sharp problem for local businesses — and collect revenue.</p>
+      <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20to%20launch%20my%20bot" target="_blank">Launch My Bot →</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© 2025 Junza Chat Systems — WhatsApp bots for African businesses.</span>
+      <a href="https://wa.me/263779614436" target="_blank" style="color:var(--green)">+263 77 961 4436</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
