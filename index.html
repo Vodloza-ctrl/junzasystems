@@ -4,260 +4,1639 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Junza Chat Systems | WhatsApp Chatbots for African Businesses</title>
-  <meta name="description" content="We build WhatsApp chatbots for restaurants, clinics, hotels, car dealers, churches, schools and tourism brands across Zimbabwe. Never miss a booking again." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="Junza Chat Systems builds high-converting WhatsApp chatbots for restaurants, clinics, creators, hotels, and growing businesses across Zimbabwe and Africa." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
   <style>
-    .chip { padding:9px 14px;border-radius:999px;border:1.5px solid rgba(39,212,95,.3);background:rgba(39,212,95,.08);color:#1a5c2a;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap; }
-    .chip:hover { background:rgba(39,212,95,.18);border-color:rgba(39,212,95,.5); }
-    #sim-chips { display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;background:#f0f0f0;border-top:1px solid #ddd; }
-    #sim-body { height:280px;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:8px; }
-    .typing-indicator { display:flex;align-items:center;gap:4px;padding:10px 14px; }
-    .nav-links a.active { color:var(--text); }
+    :root {
+      --bg: #060A06;
+      --bg-2: #0C120C;
+      --bg-3: #111811;
+      --surface: #182018;
+      --surface-2: #1E261E;
+
+      --green: #22C55E;
+      --green-dim: #16A34A;
+      --green-glow: rgba(34,197,94,0.18);
+      --green-subtle: rgba(34,197,94,0.08);
+      --wa-green: #25D366;
+
+      --text: #F0F5F0;
+      --text-2: #A8BFA8;
+      --text-3: #607060;
+
+      --border: rgba(255,255,255,0.07);
+      --border-2: rgba(34,197,94,0.25);
+
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-xs: 6px;
+
+      --shadow: 0 4px 24px rgba(0,0,0,0.5);
+      --shadow-green: 0 0 40px rgba(34,197,94,0.12);
+      --max: 1200px;
+
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* ─── SCROLL PROGRESS ─── */
+    .scroll-bar {
+      position: fixed; top: 0; left: 0;
+      height: 2px; width: 0%;
+      background: var(--green);
+      z-index: 999;
+      box-shadow: 0 0 12px var(--green);
+      transition: width 0.1s linear;
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(6,10,6,0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 18px 0; gap: 24px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 18px;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+    .logo-mark {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--green-dim), #0F7A30);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 900; font-size: 18px;
+      color: white; box-shadow: var(--shadow-green);
+    }
+    .nav-links {
+      display: flex; gap: 4px; align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-2); font-size: 14px; font-weight: 500;
+      padding: 8px 16px; border-radius: var(--radius-xs);
+      transition: .2s ease;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface); }
+    .nav-ctas { display: flex; gap: 10px; align-items: center; }
+
+    .btn {
+      display: inline-flex; align-items: center;
+      justify-content: center; gap: 8px;
+      padding: 11px 22px; border-radius: var(--radius-xs);
+      font-family: var(--font-body); font-weight: 600;
+      font-size: 14px; cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      border: none; letter-spacing: 0.01em;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-ghost {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-2);
+    }
+    .btn-ghost:hover { border-color: var(--border-2); color: var(--text); }
+    .btn-green {
+      background: var(--green);
+      color: #000;
+      box-shadow: 0 4px 20px rgba(34,197,94,0.3);
+    }
+    .btn-green:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 6px 28px rgba(34,197,94,0.45);
+    }
+    .btn-wa {
+      background: var(--wa-green);
+      color: white;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+    }
+    .btn-wa:hover {
+      filter: brightness(1.08);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.45);
+    }
+    .btn-lg { padding: 15px 30px; font-size: 16px; border-radius: var(--radius-sm); }
+    .btn-xl { padding: 18px 36px; font-size: 17px; border-radius: var(--radius-sm); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 100px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(34,197,94,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      position: relative; z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px;
+      background: var(--green-subtle);
+      border: 1px solid var(--border-2);
+      border-radius: 999px;
+      font-size: 13px; font-weight: 500; color: var(--green);
+      margin-bottom: 24px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 2s ease infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: .4; }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero h1 .accent {
+      color: var(--green);
+      display: block;
+    }
+    .hero-lead {
+      font-size: 17px;
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 54ch;
+      margin-bottom: 36px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+
+    .hero-proof {
+      display: flex; gap: 28px; flex-wrap: wrap;
+    }
+    .proof-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-3); font-weight: 500;
+    }
+    .proof-item::before {
+      content: '✓';
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--green-subtle);
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green); font-size: 10px; font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative;
+    }
+    .phone-mockup {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+    .phone-frame {
+      background: #111;
+      border-radius: 40px;
+      padding: 12px;
+      border: 2px solid #2a2a2a;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .phone-screen {
+      background: #ECE5DD;
+      border-radius: 30px;
+      overflow: hidden;
+      min-height: 580px;
+      display: flex; flex-direction: column;
+    }
+    .wa-header {
+      background: #075E54;
+      padding: 14px 16px 10px;
+      display: flex; align-items: center; gap: 10px;
+      color: white;
+    }
+    .wa-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px; flex-shrink: 0;
+    }
+    .wa-info { flex: 1; }
+    .wa-name { font-size: 15px; font-weight: 600; }
+    .wa-online { font-size: 11px; opacity: .85; }
+    .wa-icons { display: flex; gap: 18px; opacity: .9; font-size: 18px; }
+    .wa-body {
+      flex: 1; padding: 12px;
+      display: flex; flex-direction: column; gap: 8px;
+      background: url('https://i.imgur.com/yLxWEiJ.png') repeat;
+      background-size: 340px;
+      background-color: #ECE5DD;
+    }
+    .wa-bubble {
+      max-width: 82%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.45;
+      position: relative;
+    }
+    .wa-bubble.bot {
+      background: white;
+      align-self: flex-start;
+      border-top-left-radius: 2px;
+      color: #111;
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    }
+    .wa-bubble.user {
+      background: #DCF8C6;
+      align-self: flex-end;
+      border-top-right-radius: 2px;
+      color: #111;
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    }
+    .wa-time {
+      font-size: 10px; color: #999;
+      text-align: right; margin-top: 2px;
+    }
+    .wa-options {
+      display: grid; gap: 5px; margin-top: 6px;
+    }
+    .wa-opt {
+      background: white;
+      border: 1px solid #25D366;
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 12px;
+      color: #128C7E;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+    }
+    .wa-input-bar {
+      background: #F0F0F0;
+      padding: 8px 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .wa-input {
+      flex: 1; background: white; border-radius: 20px;
+      padding: 8px 14px; font-size: 13px; color: #888;
+      border: none;
+    }
+    .wa-send-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #25D366; display: flex;
+      align-items: center; justify-content: center;
+      color: white; border: none; cursor: pointer;
+    }
+
+    /* Floating badges on phone */
+    .float-badge {
+      position: absolute;
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      box-shadow: var(--shadow);
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 600;
+    }
+    .float-badge .num {
+      font-family: var(--font-display); font-size: 18px;
+      font-weight: 800; color: var(--green);
+    }
+    .float-badge-1 {
+      left: -60px; top: 80px;
+      animation: float1 4s ease-in-out infinite;
+    }
+    .float-badge-2 {
+      right: -50px; bottom: 120px;
+      animation: float2 4.5s ease-in-out infinite;
+    }
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* ─── STATS ─── */
+    .stats-strip {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0;
+    }
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 0;
+    }
+    .stat {
+      text-align: center; padding: 0 20px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-n {
+      font-family: var(--font-display); font-size: 44px;
+      font-weight: 800; color: var(--green);
+      letter-spacing: -0.04em; line-height: 1;
+      margin-bottom: 6px; display: block;
+    }
+    .stat-l { font-size: 14px; color: var(--text-2); }
+
+    /* ─── SECTION SHARED ─── */
+    .section { padding: 100px 0; }
+    .section-alt { background: var(--bg-2); }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: ''; width: 20px; height: 2px;
+      background: var(--green); border-radius: 1px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.1; color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 16px; color: var(--text-2);
+      line-height: 1.7; max-width: 56ch;
+    }
+    .section-header { margin-bottom: 56px; }
+    .section-header.center { text-align: center; }
+    .section-header.center .section-label { justify-content: center; }
+    .section-header.center .section-sub { margin: 0 auto; }
+
+    /* ─── PROBLEM / PAIN SECTION ─── */
+    .pain-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      align-items: center;
+    }
+    .pain-img {
+      position: relative; border-radius: var(--radius);
+      overflow: hidden; aspect-ratio: 4/3;
+    }
+    .pain-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: saturate(0.7);
+    }
+    .pain-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(6,10,6,.7), transparent);
+    }
+    .pain-img-caption {
+      position: absolute; bottom: 20px; left: 20px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+    }
+    .pain-img-caption strong { display: block; color: #ef4444; font-size: 22px; font-family: var(--font-display); }
+    .pain-img-caption span { font-size: 12px; color: var(--text-2); }
+
+    .pain-points { display: grid; gap: 16px; }
+    .pain-point {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: .2s ease;
+    }
+    .pain-point:hover { border-color: var(--border-2); }
+    .pain-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 8px; background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .pain-point h4 { font-size: 15px; color: var(--text); margin-bottom: 4px; font-weight: 600; }
+    .pain-point p { font-size: 13px; color: var(--text-3); line-height: 1.5; margin: 0; }
+
+    /* ─── SERVICES GRID ─── */
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: .25s ease;
+      cursor: default;
+    }
+    .service-card:hover {
+      border-color: var(--border-2);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-green);
+    }
+    .service-img {
+      width: 100%; aspect-ratio: 16/9; overflow: hidden;
+      position: relative;
+    }
+    .service-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .service-card:hover .service-img img { transform: scale(1.05); }
+    .service-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(6,10,6,.8) 100%);
+    }
+    .service-body { padding: 20px 22px; }
+    .service-icon-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .service-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--green-subtle);
+      border: 1px solid var(--border-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+    .service-tag {
+      font-size: 11px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--green);
+    }
+    .service-card h3 {
+      font-family: var(--font-display); font-size: 18px;
+      font-weight: 700; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .service-card p { font-size: 13px; color: var(--text-2); line-height: 1.6; margin: 0; }
+
+    /* ─── VIDEO SECTION ─── */
+    .video-section {
+      padding: 100px 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(34,197,94,0.06), transparent 40%),
+        var(--bg-3);
+    }
+    .video-container {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      max-width: 900px; margin: 0 auto;
+    }
+    .video-thumb {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--surface);
+      cursor: pointer;
+    }
+    .video-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: .6; transition: opacity .3s ease;
+    }
+    .video-thumb:hover img { opacity: .75; }
+    .video-overlay-ui {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px;
+    }
+    .play-btn {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 0 rgba(34,197,94,.4);
+      animation: pulse-play 2.5s ease infinite;
+      transition: transform .2s ease;
+      border: none; cursor: pointer; color: #000;
+    }
+    .play-btn:hover { transform: scale(1.1); }
+    @keyframes pulse-play {
+      0% { box-shadow: 0 0 0 0 rgba(34,197,94,.45); }
+      70% { box-shadow: 0 0 0 20px rgba(34,197,94,0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+    .video-label {
+      background: rgba(0,0,0,.7); backdrop-filter: blur(10px);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 8px 20px; font-size: 13px; font-weight: 500;
+      color: var(--text);
+    }
+    .iframe-container {
+      position: relative; aspect-ratio: 16/9;
+      display: none;
+    }
+    .iframe-container.active { display: block; }
+    .iframe-container iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: none;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .process-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+      counter-reset: step;
+    }
+    .process-step {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: .25s ease;
+      counter-increment: step;
+    }
+    .process-step:hover {
+      border-color: var(--border-2);
+      box-shadow: var(--shadow-green);
+    }
+    .process-step::before {
+      content: '0' counter(step);
+      position: absolute; top: 28px; right: 28px;
+      font-family: var(--font-display); font-size: 48px;
+      font-weight: 800; color: var(--green-subtle);
+      line-height: 1;
+    }
+    .process-num {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--green-dim), #0F7A30);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 800;
+      font-size: 18px; color: white; margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(34,197,94,.2);
+    }
+    .process-step h3 {
+      font-family: var(--font-display); font-size: 20px;
+      font-weight: 700; color: var(--text);
+      margin-bottom: 10px; letter-spacing: -.02em;
+    }
+    .process-step p {
+      font-size: 14px; color: var(--text-2);
+      line-height: 1.65; margin: 0;
+    }
+
+    /* ─── LIVE BOTS SHOWCASE ─── */
+    .bots-section {
+      background: var(--bg-2); padding: 100px 0;
+    }
+    .bots-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    }
+    .bot-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: .3s ease;
+    }
+    .bot-card:hover {
+      border-color: var(--border-2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.5), var(--shadow-green);
+    }
+    .bot-img {
+      aspect-ratio: 16/9; overflow: hidden; position: relative;
+    }
+    .bot-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .bot-card:hover .bot-img img { transform: scale(1.04); }
+    .bot-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(6,10,6,.85) 100%);
+    }
+    .bot-live-pill {
+      position: absolute; top: 14px; left: 14px;
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(0,0,0,.65); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-2); border-radius: 999px;
+      padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--green);
+    }
+    .bot-body { padding: 24px; }
+    .bot-category {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--green);
+      margin-bottom: 8px;
+    }
+    .bot-card h3 {
+      font-family: var(--font-display); font-size: 22px;
+      font-weight: 800; letter-spacing: -.03em;
+      color: var(--text); margin-bottom: 10px;
+    }
+    .bot-card p { font-size: 14px; color: var(--text-2); line-height: 1.6; margin-bottom: 20px; }
+    .bot-features {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px;
+    }
+    .bot-feature {
+      padding: 5px 12px; border-radius: 999px;
+      background: var(--green-subtle);
+      border: 1px solid var(--border-2);
+      font-size: 12px; color: var(--green); font-weight: 600;
+    }
+    .bot-cta {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .bot-stats {
+      display: flex; gap: 20px; padding-top: 16px;
+      border-top: 1px solid var(--border); margin-top: 16px;
+    }
+    .bot-stat { text-align: center; }
+    .bot-stat-n {
+      font-family: var(--font-display); font-size: 22px;
+      font-weight: 800; color: var(--green);
+    }
+    .bot-stat-l { font-size: 11px; color: var(--text-3); }
+
+    /* ─── INDUSTRIES ─── */
+    .industries-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
+    }
+    .industry-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      position: relative;
+      cursor: pointer;
+      transition: .3s ease;
+    }
+    .industry-card:hover { transform: scale(1.02); }
+    .industry-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .industry-card:hover img { transform: scale(1.06); }
+    .industry-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(6,10,6,.9) 100%);
+    }
+    .industry-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 20px 18px;
+    }
+    .industry-icon { font-size: 24px; margin-bottom: 6px; }
+    .industry-card h4 {
+      font-family: var(--font-display); font-size: 16px;
+      font-weight: 700; color: white; margin-bottom: 4px;
+    }
+    .industry-card p { font-size: 12px; color: rgba(255,255,255,.7); margin: 0; }
+
+    /* ─── PRICING ─── */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+    }
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      transition: .25s ease;
+    }
+    .price-card:hover { border-color: var(--border-2); transform: translateY(-3px); }
+    .price-card.featured {
+      border-color: var(--green-dim);
+      background: linear-gradient(180deg, rgba(34,197,94,.06), var(--surface));
+      box-shadow: var(--shadow-green);
+    }
+    .price-badge {
+      position: absolute; top: -11px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--green); color: #000;
+      font-size: 11px; font-weight: 800;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 999px;
+      white-space: nowrap;
+    }
+    .price-name {
+      font-family: var(--font-display); font-size: 16px;
+      font-weight: 700; color: var(--text-2);
+      text-transform: uppercase; letter-spacing: .05em;
+      margin-bottom: 8px;
+    }
+    .price-amount {
+      font-family: var(--font-display); font-size: 52px;
+      font-weight: 800; letter-spacing: -.04em;
+      color: var(--text); line-height: 1; margin-bottom: 4px;
+    }
+    .price-amount sup { font-size: 22px; font-weight: 600; vertical-align: super; }
+    .price-amount sub { font-size: 16px; font-weight: 500; color: var(--text-2); }
+    .price-desc {
+      font-size: 14px; color: var(--text-3);
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .price-features { display: grid; gap: 10px; margin-bottom: 28px; }
+    .price-feat {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-2);
+    }
+    .price-feat::before {
+      content: '✓'; color: var(--green); font-weight: 900;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-list { display: grid; gap: 12px; max-width: 840px; margin: 0 auto; }
+    details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      transition: .2s ease;
+    }
+    details[open] { border-color: var(--border-2); }
+    details:hover { border-color: var(--border-2); }
+    summary {
+      padding: 20px 24px;
+      cursor: pointer;
+      font-weight: 600; font-size: 15px; color: var(--text);
+      list-style: none;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .summary-arrow {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--surface-2); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green); font-size: 14px;
+      transition: transform .25s ease;
+    }
+    details[open] .summary-arrow { transform: rotate(45deg); }
+    details p {
+      padding: 0 24px 20px;
+      font-size: 14px; color: var(--text-2); line-height: 1.7; margin: 0;
+    }
+
+    /* ─── CTA FINAL ─── */
+    .final-cta {
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(34,197,94,.12), transparent 50%),
+        var(--bg-3);
+    }
+    .final-cta::before {
+      content: '';
+      position: absolute; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px; height: 80px;
+      background: linear-gradient(180deg, transparent, var(--green));
+    }
+    .final-cta h2 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800; letter-spacing: -.04em;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .final-cta p {
+      font-size: 17px; color: var(--text-2); max-width: 52ch;
+      margin: 0 auto 40px; line-height: 1.7;
+    }
+    .final-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 48px;
+    }
+    .footer-brand-desc {
+      font-size: 14px; color: var(--text-3);
+      line-height: 1.7; margin-top: 14px;
+    }
+    .footer-col h5 {
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--text-2); margin-bottom: 16px;
+    }
+    .footer-col ul { list-style: none; display: grid; gap: 10px; }
+    .footer-col a { font-size: 14px; color: var(--text-3); transition: .2s ease; }
+    .footer-col a:hover { color: var(--green); }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-size: 13px; color: var(--text-3);
+    }
+
+    /* ─── REVEAL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 60px; }
+      .phone-mockup { max-width: 320px; }
+      .float-badge-1 { left: -20px; }
+      .float-badge-2 { right: -10px; }
+      .industries-grid { grid-template-columns: repeat(2,1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .services-grid, .process-grid, .bots-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2,1fr); gap: 0; }
+      .stat { border-bottom: 1px solid var(--border); border-right: none; }
+      .stat:nth-child(odd) { border-right: 1px solid var(--border); }
+      .nav-links { display: none; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
   </style>
 </head>
-<body>
 
+<body>
+  <div class="scroll-bar" id="scrollBar"></div>
+
+  <!-- ─── NAV ─── -->
   <nav class="nav">
     <div class="wrap nav-inner">
-      <a class="logo" href="index.html">
+      <a href="#top" class="logo">
         <div class="logo-mark">J</div>
-        <div class="logo-text">
-          <div>Junza Chat Systems</div>
-          <div class="logo-sub">WhatsApp bots for African businesses</div>
-        </div>
+        Junza Chat Systems
       </a>
       <div class="nav-links">
-        <a href="#how-it-works">How It Works</a>
+        <a href="#services">Services</a>
+        <a href="#bots">Live Bots</a>
         <a href="#industries">Industries</a>
         <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
       </div>
-      <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot%20for%20my%20business" target="_blank">Get Your Bot</a>
+      <div class="nav-ctas">
+        <a class="btn btn-ghost" href="#pricing">See pricing</a>
+        <a class="btn btn-wa" href="https://wa.me/263779614436" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Book a Demo
+        </a>
+      </div>
     </div>
   </nav>
 
-  <header class="hero">
-    <div class="wrap hero-grid">
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="top">
+    <div class="wrap hero-inner">
       <div>
-        <div class="eyebrow animate-up">⚡ Zimbabwe's WhatsApp Bot Service</div>
-        <h1 class="animate-up delay-1">Your business is losing customers <span class="accent">every time WhatsApp goes unanswered.</span></h1>
-        <p class="lead animate-up delay-2">We build a WhatsApp chatbot for your business that answers customers instantly — 24 hours a day. No more missed bookings, lost leads or unanswered enquiries while you're busy.</p>
-        <div class="hero-actions animate-up delay-3">
-          <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot%20for%20my%20business" target="_blank">Get My Bot Built</a>
-          <a class="btn btn-ghost" href="#how-it-works">See How It Works</a>
+        <div class="hero-badge">
+          <span class="live-dot"></span>
+          Serving businesses across Zimbabwe & Africa
         </div>
-        <div class="proof animate-up delay-4">
-          <div class="proof-item"><strong>Live in 3–5 days</strong>Your bot is set up, customised and running on your existing WhatsApp number fast.</div>
-          <div class="proof-item"><strong>No tech skills needed</strong>We handle everything. You just respond to the leads your bot sends you.</div>
-          <div class="proof-item"><strong>Works on WhatsApp</strong>Your customers already use it. No app downloads, no new accounts, no friction.</div>
-          <div class="proof-item"><strong>Try it free first</strong>See a live demo bot before you pay anything.</div>
+        <h1>
+          Your WhatsApp is losing you
+          <span class="accent">money every day.</span>
+        </h1>
+        <p class="hero-lead">
+          Junza Chat Systems builds intelligent WhatsApp chatbots that reply instantly, capture leads 24/7, take bookings, and close sales — even while you sleep. No more missed messages. No more manual follow-ups.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-wa btn-xl" href="https://wa.me/263779614436" target="_blank">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Get My Bot Built
+          </a>
+          <a class="btn btn-ghost btn-xl" href="#bots">See Live Examples</a>
+        </div>
+        <div class="hero-proof">
+          <span class="proof-item">Setup in 5–7 days</span>
+          <span class="proof-item">No tech skills needed</span>
+          <span class="proof-item">Works on existing WhatsApp</span>
+          <span class="proof-item">White-label available</span>
         </div>
       </div>
-      <div class="mock-wrap animate-up delay-2">
-        <div class="phone">
-          <div class="screen">
-            <div class="wa-head">Junza Demo Bot</div>
-            <div id="sim-body"></div>
-            <div id="sim-chips"></div>
+
+      <!-- Phone mockup -->
+      <div class="hero-visual">
+        <div class="phone-mockup">
+          <!-- Floating badges -->
+          <div class="float-badge float-badge-1">
+            <div>
+              <div class="num">24/7</div>
+              <div style="font-size:11px;color:var(--text-2)">Auto replies</div>
+            </div>
+          </div>
+          <div class="float-badge float-badge-2">
+            <div>
+              <div class="num">3×</div>
+              <div style="font-size:11px;color:var(--text-2)">More leads</div>
+            </div>
+          </div>
+
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="wa-header">
+                <div class="wa-avatar">J</div>
+                <div class="wa-info">
+                  <div class="wa-name">Junza Bot 🤖</div>
+                  <div class="wa-online">● Online</div>
+                </div>
+                <div class="wa-icons">📞 ⋮</div>
+              </div>
+              <div class="wa-body">
+                <div class="wa-bubble bot">
+                  👋 Hi! Welcome to <strong>Mdu Evan's Restaurant</strong>.<br><br>
+                  How can I help you today?
+                  <div class="wa-options">
+                    <div class="wa-opt">🍽️ Book a Table</div>
+                    <div class="wa-opt">📋 View Menu</div>
+                    <div class="wa-opt">🚗 Order Delivery</div>
+                    <div class="wa-opt">📞 Call Us</div>
+                  </div>
+                  <div class="wa-time">10:24 ✓✓</div>
+                </div>
+                <div class="wa-bubble user">
+                  Book a table for 4 people tonight
+                  <div class="wa-time">10:25 ✓✓</div>
+                </div>
+                <div class="wa-bubble bot">
+                  Great! What time would you prefer? 🕐
+                  <div class="wa-options">
+                    <div class="wa-opt">6:30 PM</div>
+                    <div class="wa-opt">7:00 PM</div>
+                    <div class="wa-opt">7:30 PM</div>
+                    <div class="wa-opt">8:00 PM</div>
+                  </div>
+                  <div class="wa-time">10:25 ✓✓</div>
+                </div>
+                <div class="wa-bubble user">
+                  7:30 PM please
+                  <div class="wa-time">10:26 ✓✓</div>
+                </div>
+                <div class="wa-bubble bot">
+                  ✅ <strong>Booked!</strong> Table for 4 at 7:30 PM tonight. Confirmation sent! See you soon 🎉
+                  <div class="wa-time">10:26 ✓✓</div>
+                </div>
+              </div>
+              <div class="wa-input-bar">
+                <div class="wa-input">Type a message...</div>
+                <div class="wa-send-btn">➤</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="demo-keyword" style="margin-top:14px">
-          👆 This is what your customers will experience — click to try it
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS ─── -->
+  <div class="stats-strip">
+    <div class="wrap">
+      <div class="stats-row">
+        <div class="stat reveal">
+          <span class="stat-n">24/7</span>
+          <div class="stat-l">Automated customer replies</div>
+        </div>
+        <div class="stat reveal reveal-delay-1">
+          <span class="stat-n">3×</span>
+          <div class="stat-l">More leads captured</div>
+        </div>
+        <div class="stat reveal reveal-delay-2">
+          <span class="stat-n">$0</span>
+          <div class="stat-l">Per automated response</div>
+        </div>
+        <div class="stat reveal reveal-delay-3">
+          <span class="stat-n">5 days</span>
+          <div class="stat-l">Average setup time</div>
         </div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <section>
+  <!-- ─── PAIN SECTION ─── -->
+  <section class="section" id="problem">
     <div class="wrap">
-      <div class="section-header animate-up">
-        <div class="kicker">The real cost of not having a bot</div>
-        <h2>Every unanswered WhatsApp message is a sale walking out the door.</h2>
-        <p class="sub">You're already using WhatsApp to run your business. But when you're with customers, in a meeting or offline — who's answering?</p>
-      </div>
-      <div class="cards">
-        <div class="card animate-up">
-          <div class="card-icon">😤</div>
-          <h3>Customers don't wait</h3>
-          <p>If they don't get a reply quickly, they move on to your competitor. A bot replies in seconds — every time, no exceptions.</p>
+      <div class="pain-grid">
+        <div class="pain-img reveal">
+          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80" alt="Overwhelmed business owner missing WhatsApp messages" />
+          <div class="pain-img-overlay"></div>
+          <div class="pain-img-caption">
+            <strong>247+</strong>
+            <span>Messages missed per week by the average SME</span>
+          </div>
         </div>
-        <div class="card animate-up delay-1">
-          <div class="card-icon">🔁</div>
-          <h3>You're answering the same questions every day</h3>
-          <p>"What are your hours?" "Do you have space this Saturday?" "What's on the menu?" Your bot handles all of it, so you don't have to.</p>
-        </div>
-        <div class="card animate-up delay-2">
-          <div class="card-icon">💸</div>
-          <h3>Missed messages = missed money</h3>
-          <p>One missed booking a week at $30 is over $1,500 a year. A bot that costs $150 once pays for itself in the first month.</p>
+        <div>
+          <div class="section-label">The Problem</div>
+          <h2 class="section-title">Your competitors are automating.<br/>You're still typing.</h2>
+          <p class="section-sub" style="margin-bottom:28px;">Every unanswered WhatsApp is a customer that just called your competitor. While you sleep, eat, or serve other customers — you're losing business in real time.</p>
+          <div class="pain-points">
+            <div class="pain-point reveal">
+              <div class="pain-icon">😤</div>
+              <div>
+                <h4>Customers don't wait</h4>
+                <p>68% of consumers expect a reply within 5 minutes on messaging apps. After 60 minutes, most move on.</p>
+              </div>
+            </div>
+            <div class="pain-point reveal reveal-delay-1">
+              <div class="pain-icon">💸</div>
+              <div>
+                <h4>Missed messages = missed money</h4>
+                <p>Each unanswered booking or inquiry is a lost sale. Restaurants, clinics, and salons lose hundreds monthly to slow replies.</p>
+              </div>
+            </div>
+            <div class="pain-point reveal reveal-delay-2">
+              <div class="pain-icon">🔁</div>
+              <div>
+                <h4>Repetitive questions burn your time</h4>
+                <p>"What are your hours?" "Do you deliver?" "Is table X available?" — Your chatbot handles all of these forever.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="how-it-works">
+  <!-- ─── VIDEO ─── -->
+  <div class="video-section" id="demo">
     <div class="wrap">
-      <div class="section-header animate-up">
-        <div class="kicker">How it works</div>
-        <h2>We build it. We set it up. You start getting leads.</h2>
-        <p class="sub">There's nothing technical for you to do. We handle the entire setup on your existing WhatsApp Business number.</p>
+      <div class="section-header center reveal">
+        <div class="section-label">See It In Action</div>
+        <h2 class="section-title">Watch how a Junza bot converts customers</h2>
+        <p class="section-sub">See a real WhatsApp chatbot handle bookings, answer questions, and capture leads without human involvement.</p>
       </div>
-      <div class="steps">
-        <div class="step animate-up">
-          <div class="step-num">1</div>
-          <h3>Try a free demo first</h3>
-          <p>Message us and we'll show you a live demo built for your type of business — restaurants see a booking bot, clinics see an appointment bot, and so on. You see exactly what your customers will experience before you spend anything.</p>
+      <div class="video-container reveal">
+        <div class="video-thumb" id="videoThumb" onclick="playVideo()">
+          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1200&q=80" alt="WhatsApp chatbot demo video thumbnail" />
+          <div class="video-overlay-ui">
+            <button class="play-btn" aria-label="Play demo video">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </button>
+            <div class="video-label">▶ Watch: Live Bot Demo — 2 min</div>
+          </div>
         </div>
-        <div class="step animate-up delay-1">
-          <div class="step-num">2</div>
-          <h3>We customise and go live</h3>
-          <p>We set up your bot with your business name, services, prices, hours and contact details. It runs on your existing WhatsApp number. Your customers won't notice anything changed — they'll just start getting instant replies.</p>
+        <div class="iframe-container" id="videoFrame">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0"
+            title="Junza Chat Systems Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            id="videoIframe"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SERVICES ─── -->
+  <section class="section section-alt" id="services">
+    <div class="wrap">
+      <div class="section-header center reveal">
+        <div class="section-label">What We Build</div>
+        <h2 class="section-title">Everything your bot can do for your business</h2>
+        <p class="section-sub">Not robot theatre. Real automation that saves hours, captures revenue, and impresses your customers.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-img">
+            <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="Instant WhatsApp reply automation" />
+            <div class="service-img-overlay"></div>
+          </div>
+          <div class="service-body">
+            <div class="service-icon-row">
+              <div class="service-icon">💬</div>
+              <span class="service-tag">Core Feature</span>
+            </div>
+            <h3>Instant 24/7 Replies</h3>
+            <p>Welcome messages, FAQs, business hours, pricing — your bot answers everything immediately, every time.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-img">
+            <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80" alt="Appointment booking via WhatsApp" />
+            <div class="service-img-overlay"></div>
+          </div>
+          <div class="service-body">
+            <div class="service-icon-row">
+              <div class="service-icon">📅</div>
+              <span class="service-tag">High Impact</span>
+            </div>
+            <h3>Bookings & Appointments</h3>
+            <p>Restaurants, clinics, salons — customers book slots directly in WhatsApp with instant confirmation.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-img">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="WhatsApp sales and order processing" />
+            <div class="service-img-overlay"></div>
+          </div>
+          <div class="service-body">
+            <div class="service-icon-row">
+              <div class="service-icon">🛒</div>
+              <span class="service-tag">Revenue Driver</span>
+            </div>
+            <h3>Sales & Order Processing</h3>
+            <p>Product menus, order capture, upsells, and payment confirmation — fully automated, zero manual work.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-img">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" alt="Payment integration WhatsApp" />
+            <div class="service-img-overlay"></div>
+          </div>
+          <div class="service-body">
+            <div class="service-icon-row">
+              <div class="service-icon">💳</div>
+              <span class="service-tag">Money Flow</span>
+            </div>
+            <h3>Payment Flows</h3>
+            <p>Guide customers from cart to EcoCash, bank transfer, or card confirmation — smooth checkout inside WhatsApp.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-img">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80" alt="WhatsApp marketing campaigns broadcast" />
+            <div class="service-img-overlay"></div>
+          </div>
+          <div class="service-body">
+            <div class="service-icon-row">
+              <div class="service-icon">📣</div>
+              <span class="service-tag">Marketing</span>
+            </div>
+            <h3>Campaigns & Broadcasts</h3>
+            <p>Run promotions, event reminders, and targeted offers to your entire customer list — without typing each one.</p>
+          </div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-img">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Lead capture and pipeline management" />
+            <div class="service-img-overlay"></div>
+          </div>
+          <div class="service-body">
+            <div class="service-icon-row">
+              <div class="service-icon">📈</div>
+              <span class="service-tag">Growth</span>
+            </div>
+            <h3>Lead Capture & Pipeline</h3>
+            <p>Collect names, contacts, and intent automatically so your WhatsApp becomes a structured sales pipeline.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="industries">
+  <!-- ─── LIVE BOTS ─── -->
+  <section class="bots-section" id="bots">
     <div class="wrap">
-      <div class="section-header animate-up">
-        <div class="kicker">Built for your business</div>
-        <h2>We've built bots for 7 types of businesses in Zimbabwe.</h2>
-        <p class="sub">Each bot is designed around how your customers behave and what they need — not a generic bot that barely understands your industry.</p>
+      <div class="section-header reveal">
+        <div class="section-label">Real Work. Live Now.</div>
+        <h2 class="section-title">Try our live chatbots — built by Junza</h2>
+        <p class="section-sub">These aren't mockups. These are real Junza-built WhatsApp bots running right now for actual businesses. Tap to try them yourself.</p>
       </div>
-      <div class="industry-grid">
-        <a class="industry-link animate-up" href="restaurant-bot.html">
-          <span class="emoji">🍽</span>
-          <span class="label">Restaurant</span>
-          <span class="desc">Take bookings, share your menu, handle takeaway orders</span>
-        </a>
-        <a class="industry-link animate-up delay-1" href="clinic-bot.html">
-          <span class="emoji">🏥</span>
-          <span class="label">Clinic</span>
-          <span class="desc">Book appointments, share hours, answer patient questions</span>
-        </a>
-        <a class="industry-link animate-up delay-2" href="hotel-bot.html">
-          <span class="emoji">🏨</span>
-          <span class="label">Hotel or Lodge</span>
-          <span class="desc">Capture room enquiries, share rates, confirm reservations</span>
-        </a>
-        <a class="industry-link animate-up delay-3" href="car-dealer-bot.html">
-          <span class="emoji">🚗</span>
-          <span class="label">Car Dealer</span>
-          <span class="desc">Qualify buyers, share your stock, book test drives</span>
-        </a>
-        <a class="industry-link animate-up" href="church-bot.html">
-          <span class="emoji">⛪</span>
-          <span class="label">Church</span>
-          <span class="desc">Share service times, register for events, direct members</span>
-        </a>
-        <a class="industry-link animate-up delay-1" href="school-bot.html">
-          <span class="emoji">🎓</span>
-          <span class="label">School</span>
-          <span class="desc">Handle admissions, answer fee questions, support parents</span>
-        </a>
-        <a class="industry-link animate-up delay-2" href="tourism-bot.html">
-          <span class="emoji">🌍</span>
-          <span class="label">Tourism</span>
-          <span class="desc">Share packages, capture booking requests, send quotes</span>
-        </a>
-        <div class="industry-link animate-up delay-3" style="opacity:.5;cursor:default;justify-content:center;align-items:center;text-align:center">
-          <span class="label" style="font-size:13px;color:var(--muted)">Don't see your industry?<br>Message us — we can help.</span>
+      <div class="bots-grid">
+
+        <!-- Bot 1 - Mdu Evan Restaurant -->
+        <div class="bot-card reveal">
+          <div class="bot-img">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Mdu Evan Restaurant WhatsApp bot" />
+            <div class="bot-img-overlay"></div>
+            <div class="bot-live-pill">
+              <span class="live-dot"></span> Live Bot
+            </div>
+          </div>
+          <div class="bot-body">
+            <div class="bot-category">Restaurant & Dining</div>
+            <h3>Mdu Evan's Restaurant Bot</h3>
+            <p>A fully automated restaurant WhatsApp bot handling table reservations, menu browsing, takeaway orders, and customer queries — completely hands-free.</p>
+            <div class="bot-features">
+              <span class="bot-feature">Table Bookings</span>
+              <span class="bot-feature">Menu Display</span>
+              <span class="bot-feature">Delivery Orders</span>
+              <span class="bot-feature">24/7 Replies</span>
+              <span class="bot-feature">Instant Confirmation</span>
+            </div>
+            <div class="bot-cta">
+              <a class="btn btn-wa" href="https://wa.me/263719362231?text=MDUSEVAN" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Try This Bot Live
+              </a>
+              <div style="font-size:12px;color:var(--text-3)">Send "MDUSEVAN" to start</div>
+            </div>
+            <div class="bot-stats">
+              <div class="bot-stat">
+                <div class="bot-stat-n">24/7</div>
+                <div class="bot-stat-l">Active</div>
+              </div>
+              <div class="bot-stat">
+                <div class="bot-stat-n">4</div>
+                <div class="bot-stat-l">Core flows</div>
+              </div>
+              <div class="bot-stat">
+                <div class="bot-stat-n">0s</div>
+                <div class="bot-stat-l">Response time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot 2 -->
+        <div class="bot-card reveal reveal-delay-1">
+          <div class="bot-img">
+            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" alt="Junza second live bot example" />
+            <div class="bot-img-overlay"></div>
+            <div class="bot-live-pill">
+              <span class="live-dot"></span> Live Bot
+            </div>
+          </div>
+          <div class="bot-body">
+            <div class="bot-category">Business Automation</div>
+            <h3>Junza Sales & Support Bot</h3>
+            <p>A multi-purpose business bot handling lead capture, product enquiries, pricing info, and directing customers to the right service — no human needed.</p>
+            <div class="bot-features">
+              <span class="bot-feature">Lead Capture</span>
+              <span class="bot-feature">Product FAQs</span>
+              <span class="bot-feature">Pricing Info</span>
+              <span class="bot-feature">Smart Routing</span>
+              <span class="bot-feature">Follow-ups</span>
+            </div>
+            <div class="bot-cta">
+              <a class="btn btn-wa" href="https://wa.me/263713321211" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Try This Bot Live
+              </a>
+              <div style="font-size:12px;color:var(--text-3)">Tap to open in WhatsApp</div>
+            </div>
+            <div class="bot-stats">
+              <div class="bot-stat">
+                <div class="bot-stat-n">24/7</div>
+                <div class="bot-stat-l">Active</div>
+              </div>
+              <div class="bot-stat">
+                <div class="bot-stat-n">6+</div>
+                <div class="bot-stat-l">Custom flows</div>
+              </div>
+              <div class="bot-stat">
+                <div class="bot-stat-n">0s</div>
+                <div class="bot-stat-l">Response time</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section>
+  <!-- ─── INDUSTRIES ─── -->
+  <section class="section" id="industries">
     <div class="wrap">
-      <div class="section-header animate-up">
-        <div class="kicker">Before and after</div>
-        <h2>What changes when your bot goes live.</h2>
+      <div class="section-header center reveal">
+        <div class="section-label">Who We Serve</div>
+        <h2 class="section-title">Built for the businesses that run Zimbabwe</h2>
+        <p class="section-sub">If your customers are on WhatsApp, we can automate it. Here's who we've built for.</p>
       </div>
-      <div class="copy-grid">
-        <div class="copy-box animate-up">
-          <h3>Before Junza</h3>
-          <div class="bad">Customers message and wait hours for a reply</div>
-          <div class="bad">You spend your day answering the same questions</div>
-          <div class="bad">Bookings and leads are lost when you're unavailable</div>
-          <div class="bad">No record of who enquired or what they needed</div>
+      <div class="industries-grid">
+        <div class="industry-card reveal">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80" alt="Restaurant WhatsApp bot" />
+          <div class="industry-overlay"></div>
+          <div class="industry-info">
+            <div class="industry-icon">🍽️</div>
+            <h4>Restaurants</h4>
+            <p>Bookings, orders, menus</p>
+          </div>
         </div>
-        <div class="copy-box animate-up delay-1">
-          <h3>After Junza</h3>
-          <div class="good">Every customer gets an instant reply — day or night</div>
-          <div class="good">FAQs, menus, prices and directions are all automated</div>
-          <div class="good">Bookings and leads are captured while you're busy</div>
-          <div class="good">Every enquiry is recorded so nothing slips through</div>
+        <div class="industry-card reveal reveal-delay-1">
+          <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=400&q=80" alt="Clinic appointment bot" />
+          <div class="industry-overlay"></div>
+          <div class="industry-info">
+            <div class="industry-icon">🏥</div>
+            <h4>Clinics</h4>
+            <p>Appointments, reminders</p>
+          </div>
+        </div>
+        <div class="industry-card reveal reveal-delay-2">
+          <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&q=80" alt="Hotel booking bot" />
+          <div class="industry-overlay"></div>
+          <div class="industry-info">
+            <div class="industry-icon">🏨</div>
+            <h4>Hotels</h4>
+            <p>Reservations, check-in</p>
+          </div>
+        </div>
+        <div class="industry-card reveal reveal-delay-3">
+          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80" alt="Salon appointment bot" />
+          <div class="industry-overlay"></div>
+          <div class="industry-info">
+            <div class="industry-icon">💅</div>
+            <h4>Salons & Spas</h4>
+            <p>Slots, services, reminders</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="pricing">
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="section section-alt" id="process">
     <div class="wrap">
-      <div class="section-header animate-up">
-        <div class="kicker">Pricing</div>
-        <h2>Simple, honest pricing.</h2>
-        <p class="sub">One setup fee. Optional monthly support. No hidden costs.</p>
+      <div class="section-header center reveal">
+        <div class="section-label">The Process</div>
+        <h2 class="section-title">From idea to live bot in 5–7 days</h2>
+        <p class="section-sub">Clean process. No fog. No techno-mystic smoke machine. Just results.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <div class="process-num">1</div>
+          <h3>Strategy & Flow Mapping</h3>
+          <p>We learn your business, your customers, and your goals. Then we map every conversation flow, decision tree, and conversion touchpoint before writing a single line of code.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-1">
+          <div class="process-num">2</div>
+          <h3>Build & Automate</h3>
+          <p>We build your bot — menus, auto-replies, booking logic, payment flows, lead forms, and campaign sequences. Everything tested and polished before it touches your customers.</p>
+        </div>
+        <div class="process-step reveal reveal-delay-2">
+          <div class="process-num">3</div>
+          <h3>Launch & Keep Improving</h3>
+          <p>We go live, monitor performance, and refine based on real customer interactions. Your bot gets smarter over time, not stale.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRICING ─── -->
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <div class="section-header center reveal">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Start lean. Scale when it works.</h2>
+        <p class="section-sub">All plans include setup, testing, and 30-day support. No hidden fees. Cancel anytime.</p>
       </div>
       <div class="pricing-grid">
-        <div class="price-card animate-up">
-          <div class="plan-badge">Try It Free</div>
-          <div class="amount">Free</div>
-          <div class="amount-note">No commitment needed</div>
-          <ul>
-            <li>Live demo for your industry</li>
-            <li>WhatsApp walkthrough with our team</li>
-            <li>See your bot before you buy</li>
-          </ul>
-          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%27d%20like%20to%20see%20a%20free%20demo" target="_blank">Request Free Demo</a>
+
+        <div class="price-card reveal">
+          <div class="price-name">Starter</div>
+          <div class="price-amount"><sup>$</sup>40<sub>/mo</sub></div>
+          <p class="price-desc">For small businesses that need structure and speed on WhatsApp.</p>
+          <div class="price-features">
+            <div class="price-feat">Welcome flow + menu navigation</div>
+            <div class="price-feat">FAQ automation</div>
+            <div class="price-feat">Lead capture form</div>
+            <div class="price-feat">Basic setup & support</div>
+            <div class="price-feat">1 business number</div>
+          </div>
+          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=I'm%20interested%20in%20the%20Starter%20plan" target="_blank" style="width:100%; justify-content:center;">
+            Get Started
+          </a>
         </div>
-        <div class="price-card featured animate-up delay-1">
-          <div class="plan-badge">⭐ Get Your Bot Built</div>
-          <div class="amount">$150</div>
-          <div class="amount-note">One-time setup — yours to keep</div>
-          <ul>
-            <li>Bot built for your specific business</li>
-            <li>Your name, services, hours and location</li>
-            <li>Runs on your existing WhatsApp number</li>
-            <li>Live in 3–5 days</li>
-            <li>1 week of fixes included</li>
-          </ul>
-          <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20to%20get%20my%20bot%20built" target="_blank">Get My Bot Built</a>
+
+        <div class="price-card featured reveal reveal-delay-1">
+          <div class="price-badge">Most Popular</div>
+          <div class="price-name">Business</div>
+          <div class="price-amount"><sup>$</sup>90<sub>/mo</sub></div>
+          <p class="price-desc">For brands serious about using WhatsApp as their main sales channel.</p>
+          <div class="price-features">
+            <div class="price-feat">Everything in Starter</div>
+            <div class="price-feat">Bookings or orders flow</div>
+            <div class="price-feat">Payment integration support</div>
+            <div class="price-feat">Marketing campaign setup</div>
+            <div class="price-feat">Priority updates & tweaks</div>
+            <div class="price-feat">Monthly performance review</div>
+          </div>
+          <a class="btn btn-green" href="https://wa.me/263779614436?text=I'm%20interested%20in%20the%20Business%20plan" target="_blank" style="width:100%; justify-content:center;">
+            Get Business Plan
+          </a>
         </div>
-        <div class="price-card animate-up delay-2">
-          <div class="plan-badge">Monthly Support</div>
-          <div class="amount">$35</div>
-          <div class="amount-note">Per month — cancel anytime</div>
-          <ul>
-            <li>Update menus, services or prices anytime</li>
-            <li>Send broadcast messages to customers</li>
-            <li>Add new flows as your business grows</li>
-            <li>Priority support from our team</li>
-          </ul>
-          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20tell%20me%20about%20monthly%20support" target="_blank">Ask About This</a>
+
+        <div class="price-card reveal reveal-delay-2">
+          <div class="price-name">Premium</div>
+          <div class="price-amount"><sup>$</sup>180<sub>/mo</sub></div>
+          <p class="price-desc">For businesses that need deeper automation, data, and scale.</p>
+          <div class="price-features">
+            <div class="price-feat">Everything in Business</div>
+            <div class="price-feat">Advanced multi-step automation</div>
+            <div class="price-feat">Segmented broadcasts & campaigns</div>
+            <div class="price-feat">Analytics & conversion tracking</div>
+            <div class="price-feat">Deep custom flows & integrations</div>
+            <div class="price-feat">White-label service available</div>
+          </div>
+          <a class="btn btn-ghost" href="https://wa.me/263779614436?text=I'm%20interested%20in%20the%20Premium%20plan" target="_blank" style="width:100%; justify-content:center;">
+            Go Premium
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="final-cta animate-up">
+  <!-- ─── FAQ ─── -->
+  <section class="section section-alt" id="faq">
     <div class="wrap">
-      <div class="kicker">Ready to stop missing customers?</div>
-      <h2>Get your bot up and running this week.</h2>
-      <p>Message us now and we'll show you a free demo. No pressure, no commitment — just a look at what your customers will experience when your bot is live.</p>
-      <a class="btn btn-main" href="https://wa.me/263779614436?text=Hi%20Junza%2C%20I%20want%20a%20WhatsApp%20bot%20for%20my%20business" target="_blank">Message Us on WhatsApp →</a>
+      <div class="section-header center reveal">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-title">Questions we get every day</h2>
+      </div>
+      <div class="faq-list">
+        <details class="reveal">
+          <summary>
+            Do I need any technical skills to use a Junza bot?
+            <span class="summary-arrow">+</span>
+          </summary>
+          <p>None at all. We handle everything — strategy, build, testing, launch, and updates. You just share your business context and we do the rest. If you can use WhatsApp, you can run a Junza bot.</p>
+        </details>
+        <details class="reveal">
+          <summary>
+            How long does it take to go live?
+            <span class="summary-arrow">+</span>
+          </summary>
+          <p>Typically 5–7 business days from the strategy call to live deployment. Complex bots with payment integrations or multi-branch logic may take up to 10 days. We'll give you a clear timeline upfront.</p>
+        </details>
+        <details class="reveal">
+          <summary>
+            Will the bot work on my existing WhatsApp number?
+            <span class="summary-arrow">+</span>
+          </summary>
+          <p>Yes. We build on WhatsApp Business so your existing number and customer relationships stay intact. No need to move customers to a new number or platform.</p>
+        </details>
+        <details class="reveal">
+          <summary>
+            Can I try the bot before I buy?
+            <span class="summary-arrow">+</span>
+          </summary>
+          <p>Absolutely. Our live demo bots are linked above — try them right now, for free. They're real bots we built for actual businesses, not mockups. What you see is what you get.</p>
+        </details>
+        <details class="reveal">
+          <summary>
+            What if I want a bot for multiple branches or locations?
+            <span class="summary-arrow">+</span>
+          </summary>
+          <p>We handle multi-location setups and white-label models for agencies managing multiple clients. Contact us on WhatsApp to discuss your specific needs and we'll build a custom plan.</p>
+        </details>
+        <details class="reveal">
+          <summary>
+            Do you serve businesses outside Zimbabwe?
+            <span class="summary-arrow">+</span>
+          </summary>
+          <p>Yes. Junza is built for African businesses first, but we serve clients regionally and internationally. If your customers use WhatsApp, we can build for you.</p>
+        </details>
+      </div>
     </div>
   </section>
 
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span>© 2025 Junza Chat Systems — WhatsApp bots for African businesses.</span>
-      <a href="https://wa.me/263779614436" target="_blank" style="color:var(--green)">+263 77 961 4436</a>
+  <!-- ─── FINAL CTA ─── -->
+  <section class="final-cta" id="cta">
+    <div class="wrap">
+      <div class="section-label" style="justify-content:center; margin-bottom:20px;">Start Today</div>
+      <h2>Your bot can be live<br/>in 5 days.</h2>
+      <p>Every day you wait is another day of missed leads, unanswered messages, and lost bookings. Let's fix that — starting now.</p>
+      <div class="final-actions">
+        <a class="btn btn-wa btn-xl" href="https://wa.me/263779614436" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat With Us on WhatsApp
+        </a>
+        <a class="btn btn-ghost btn-xl" href="mailto:junzatv@gmail.com">
+          Send an Email
+        </a>
+      </div>
+      <p style="font-size:13px;color:var(--text-3);margin-top:20px;">No contracts. No setup fees. Results in 5 days.</p>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <a href="#top" class="logo">
+            <div class="logo-mark">J</div>
+            Junza Chat Systems
+          </a>
+          <p class="footer-brand-desc">High-converting WhatsApp chatbots for restaurants, clinics, hotels, creators, and growing African businesses. Built in Zimbabwe. Built to scale.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="#services">Instant Replies</a></li>
+            <li><a href="#services">Bookings & Appointments</a></li>
+            <li><a href="#services">Sales Automation</a></li>
+            <li><a href="#services">Lead Capture</a></li>
+            <li><a href="#services">White-label</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#bots">Live Examples</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#process">How It Works</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="https://wa.me/263779614436" target="_blank">WhatsApp Us</a></li>
+            <li><a href="mailto:junzatv@gmail.com">junzatv@gmail.com</a></li>
+            <li><a href="#bots">Try Live Demo</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <span id="yr"></span> Junza Chat Systems · Harare / Bulawayo / Remote</div>
+        <div>WhatsApp automation for modern African businesses</div>
+      </div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Scroll progress
+    const bar = document.getElementById('scrollBar');
+    window.addEventListener('scroll', () => {
+      const d = document.documentElement;
+      const pct = d.scrollHeight - d.clientHeight > 0
+        ? (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100 : 0;
+      bar.style.width = pct + '%';
+    }, { passive: true });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll('details').forEach(d => {
+      d.addEventListener('toggle', () => {
+        if (d.open) document.querySelectorAll('details').forEach(o => { if (o !== d) o.open = false; });
+      });
+    });
+
+    // Video
+    function playVideo() {
+      document.getElementById('videoThumb').style.display = 'none';
+      document.getElementById('videoFrame').classList.add('active');
+    }
+
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
