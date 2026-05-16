@@ -1,1 +1,160 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard | Sale Company</title><link rel="stylesheet" href="assets/css/styles.css"></head><body><div class="dash"><aside class="side"><div class="brand">Sale Dashboard</div><a class="active">Overview</a><a>Items</a><a>Bookings</a><a>Orders</a><a>Customers</a><a>Reviews</a><a>Payouts</a><a>Customize</a><a>Settings</a></aside><main class="main"><p class="eyebrow">Operator control room</p><h1>Today’s operations</h1><div class="metric-grid"><div class="metric"><span class="muted">Today</span><br><strong>$85</strong></div><div class="metric"><span class="muted">Bookings</span><br><strong>6</strong></div><div class="metric"><span class="muted">Pending Orders</span><br><strong>4</strong></div><div class="metric"><span class="muted">Next Payout</span><br><strong>$62</strong></div></div><section class="section"><div class="grid"><div class="card"><h2>Add item/service</h2><form class="form"><select class="input"><option>Service</option><option>Product</option><option>Food/Menu item</option><option>Catalogue item</option></select><input class="input" placeholder="Name"><input class="input" placeholder="Price"><input class="input" type="file" accept="image/png,image/jpeg,image/webp"><button class="btn gold">Save item</button></form></div><div class="card"><h2>Safety checklist</h2><p class="muted">Image uploads must go through Worker/R2 signed routes. Payout changes require verification. Customer data is minimal. Every action is logged.</p></div></div></section><table class="table"><thead><tr><th>Action needed</th><th>Status</th><th>Next step</th></tr></thead><tbody><tr><td>Knotless Braids booking</td><td>Pending payment</td><td>Send reminder</td></tr><tr><td>Perfume order</td><td>Paid</td><td>Mark preparing</td></tr><tr><td>Customer review</td><td>Unreplied</td><td>Reply</td></tr></tbody></table></main></div></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard | Sale Company</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+  <div class="dash">
+    <aside class="side">
+      <div class="brand">Sale Dashboard</div>
+      <a class="active">Overview</a>
+      <a>Items</a>
+      <a>Bookings</a>
+      <a>Orders</a>
+      <a>Customers</a>
+      <a>Reviews</a>
+      <a>Payouts</a>
+      <a>Customize</a>
+      <a>Settings</a>
+    </aside>
+
+    <main class="main">
+      <p class="eyebrow">Operator control room</p>
+      <h1 id="dash-title">Today’s operations</h1>
+
+      <div class="metric-grid">
+        <div class="metric"><span class="muted">Gross Value</span><br><strong id="gross-value">$0</strong></div>
+        <div class="metric"><span class="muted">Bookings</span><br><strong id="total-bookings">0</strong></div>
+        <div class="metric"><span class="muted">Pending Bookings</span><br><strong id="pending-bookings">0</strong></div>
+        <div class="metric"><span class="muted">Orders</span><br><strong id="total-orders">0</strong></div>
+      </div>
+
+      <section class="section">
+        <div class="grid">
+          <div class="card">
+            <h2>Recent Bookings</h2>
+            <div id="bookings-list" class="muted">Loading bookings...</div>
+          </div>
+
+          <div class="card">
+            <h2>Recent Orders</h2>
+            <div id="orders-list" class="muted">Loading orders...</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="grid">
+          <div class="card">
+            <h2>Safety checklist</h2>
+            <p class="muted">
+              Image uploads must go through Worker/R2 signed routes. Payout changes require verification.
+              Customer data is minimal. Every action is logged.
+            </p>
+          </div>
+
+          <div class="card">
+            <h2>Payment setup</h2>
+            <p class="muted" id="payment-mode">Loading payment mode...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script>
+    const CONFIG = window.SALE_CONFIG || {};
+    const API_BASE = String(CONFIG.apiBase || "").replace(/\/$/, "");
+    const TENANT_ID = "ten_demo_hair";
+
+    function money(value) {
+      return `$${Number(value || 0).toFixed(2).replace(".00", "")}`;
+    }
+
+    async function fetchDashboard() {
+      const res = await fetch(`${API_BASE}/api/dashboard/${TENANT_ID}`, {
+        cache: "no-store"
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Dashboard request failed");
+      }
+
+      return data;
+    }
+
+    function renderBookings(bookings) {
+      const el = document.getElementById("bookings-list");
+
+      if (!bookings || bookings.length === 0) {
+        el.innerHTML = `<p class="muted">No bookings yet.</p>`;
+        return;
+      }
+
+      el.innerHTML = bookings.map((b) => `
+        <div class="notice" style="margin-bottom:10px">
+          <strong>${b.item_name || "Booking"}</strong><br>
+          <span class="muted">
+            Status: ${b.booking_status || "created"} · Payment: ${b.payment_status || "pending"} · ${money(b.total_amount)}
+          </span><br>
+          <span class="muted">Ref: ${b.booking_id}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderOrders(orders) {
+      const el = document.getElementById("orders-list");
+
+      if (!orders || orders.length === 0) {
+        el.innerHTML = `<p class="muted">No orders yet.</p>`;
+        return;
+      }
+
+      el.innerHTML = orders.map((o) => `
+        <div class="notice" style="margin-bottom:10px">
+          <strong>${o.item_summary || "Order"}</strong><br>
+          <span class="muted">
+            Fulfilment: ${o.fulfilment_status || "created"} · Payment: ${o.payment_status || "pending"} · ${money(o.total_amount)}
+          </span><br>
+          <span class="muted">Ref: ${o.order_id}</span>
+        </div>
+      `).join("");
+    }
+
+    async function initDashboard() {
+      try {
+        const data = await fetchDashboard();
+        const tenant = data.tenant || {};
+        const stats = data.stats || {};
+
+        document.title = `${tenant.business_name || "Dashboard"} | Sale Company`;
+        document.getElementById("dash-title").textContent = `${tenant.business_name || "Business"} operations`;
+
+        document.getElementById("gross-value").textContent = money(stats.gross_value);
+        document.getElementById("total-bookings").textContent = stats.total_bookings || 0;
+        document.getElementById("pending-bookings").textContent = stats.pending_bookings || 0;
+        document.getElementById("total-orders").textContent = stats.total_orders || 0;
+
+        document.getElementById("payment-mode").textContent =
+          `Payment mode: ${tenant.payment_mode || "sale_unified"} · WhatsApp mode: ${tenant.whatsapp_mode || "platform_unified"}`;
+
+        renderBookings(data.bookings || []);
+        renderOrders(data.orders || []);
+      } catch (error) {
+        document.getElementById("dash-title").textContent = "Dashboard failed to load";
+        document.getElementById("bookings-list").innerHTML = `<p class="muted">${error.message}</p>`;
+        document.getElementById("orders-list").innerHTML = `<p class="muted">${error.message}</p>`;
+      }
+    }
+
+    initDashboard();
+  </script>
+</body>
+</html>
