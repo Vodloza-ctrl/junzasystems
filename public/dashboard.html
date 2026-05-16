@@ -159,7 +159,39 @@
       const data = await res.json();
 
       if (!res.ok || data.status === "error") {
-        throw new Error(data.message || "Update failed");
+        throw new Error(data.message || "Item update failed");
+      }
+
+      return data;
+    }
+
+    async function patchBooking(bookingId, payload) {
+      const res = await fetch(`${API_BASE}/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Booking update failed");
+      }
+
+      return data;
+    }
+
+    async function patchOrder(orderId, payload) {
+      const res = await fetch(`${API_BASE}/api/orders/${orderId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data.status === "error") {
+        throw new Error(data.message || "Order update failed");
       }
 
       return data;
@@ -201,6 +233,36 @@
       }
     }
 
+    async function updateBookingStatus(bookingId, bookingStatus, paymentStatus = null) {
+      try {
+        const payload = { booking_status: bookingStatus };
+
+        if (paymentStatus) {
+          payload.payment_status = paymentStatus;
+        }
+
+        await patchBooking(bookingId, payload);
+        await initDashboard();
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
+    async function updateOrderStatus(orderId, fulfilmentStatus, paymentStatus = null) {
+      try {
+        const payload = { fulfilment_status: fulfilmentStatus };
+
+        if (paymentStatus) {
+          payload.payment_status = paymentStatus;
+        }
+
+        await patchOrder(orderId, payload);
+        await initDashboard();
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+
     function renderItems(items) {
       const el = document.getElementById("items-list");
 
@@ -229,19 +291,13 @@
           </span>
 
           <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-            <button
-              class="btn"
-              style="padding:10px 14px"
-              onclick="editItem('${item.item_id}', '${escapeForAttr(item.name)}', '${escapeForAttr(item.description)}', '${escapeForAttr(item.category)}', '${item.price}')"
-            >
+            <button class="btn" style="padding:10px 14px"
+              onclick="editItem('${item.item_id}', '${escapeForAttr(item.name)}', '${escapeForAttr(item.description)}', '${escapeForAttr(item.category)}', '${item.price}')">
               Edit
             </button>
 
-            <button
-              class="btn gold"
-              style="padding:10px 14px"
-              onclick="toggleItem('${item.item_id}', ${item.active ? 0 : 1})"
-            >
+            <button class="btn gold" style="padding:10px 14px"
+              onclick="toggleItem('${item.item_id}', ${item.active ? 0 : 1})">
               ${item.active ? "Deactivate" : "Activate"}
             </button>
           </div>
@@ -260,10 +316,41 @@
       el.innerHTML = bookings.map((b) => `
         <div class="notice" style="margin-bottom:10px">
           <strong>${b.item_name || "Booking"}</strong><br>
+
           <span class="muted">
-            Status: ${b.booking_status || "created"} · Payment: ${b.payment_status || "pending"} · ${money(b.total_amount)}
+            Status: ${b.booking_status || "created"}
+            · Payment: ${b.payment_status || "pending"}
+            · ${money(b.total_amount)}
           </span><br>
+
           <span class="muted">Ref: ${b.booking_id}</span>
+
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateBookingStatus('${b.booking_id}', 'confirmed')">
+              Confirm
+            </button>
+
+            <button class="btn gold" style="padding:10px 14px"
+              onclick="updateBookingStatus('${b.booking_id}', '${b.booking_status || "created"}', 'paid')">
+              Mark Paid
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateBookingStatus('${b.booking_id}', 'completed')">
+              Completed
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateBookingStatus('${b.booking_id}', 'cancelled')">
+              Cancel
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateBookingStatus('${b.booking_id}', 'no_show')">
+              No-show
+            </button>
+          </div>
         </div>
       `).join("");
     }
@@ -279,10 +366,41 @@
       el.innerHTML = orders.map((o) => `
         <div class="notice" style="margin-bottom:10px">
           <strong>${o.item_summary || "Order"}</strong><br>
+
           <span class="muted">
-            Fulfilment: ${o.fulfilment_status || "created"} · Payment: ${o.payment_status || "pending"} · ${money(o.total_amount)}
+            Fulfilment: ${o.fulfilment_status || "created"}
+            · Payment: ${o.payment_status || "pending"}
+            · ${money(o.total_amount)}
           </span><br>
+
           <span class="muted">Ref: ${o.order_id}</span>
+
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn gold" style="padding:10px 14px"
+              onclick="updateOrderStatus('${o.order_id}', '${o.fulfilment_status || "created"}', 'paid')">
+              Mark Paid
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateOrderStatus('${o.order_id}', 'preparing')">
+              Preparing
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateOrderStatus('${o.order_id}', 'ready')">
+              Ready
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateOrderStatus('${o.order_id}', 'delivered')">
+              Delivered
+            </button>
+
+            <button class="btn" style="padding:10px 14px"
+              onclick="updateOrderStatus('${o.order_id}', 'cancelled')">
+              Cancel
+            </button>
+          </div>
         </div>
       `).join("");
     }
