@@ -1,0 +1,23 @@
+name = "sale-company-api"
+main = "worker/index.js"
+compatibility_date = "2026-05-16"
+
+[vars]
+ALLOWED_ORIGIN = "https://sale.co.zw"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sale-company-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "sale-company-assets"
+
+# Secrets to set with wrangler secret put:
+# SUPABASE_SERVICE_ROLE_KEY
+# SUPABASE_JWT_SECRET or JWKS config
+# PAYNOW_INTEGRATION_ID
+# PAYNOW_INTEGRATION_KEY
+# EMAIL_API_KEY
+# OWNER_SECRET
