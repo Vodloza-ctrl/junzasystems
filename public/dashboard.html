@@ -47,21 +47,18 @@
               </select>
 
               <input class="input" id="item-name" placeholder="Name" required>
-
               <textarea class="input" id="item-description" placeholder="Description"></textarea>
-
               <input class="input" id="item-category" placeholder="Category">
-
               <input class="input" id="item-price" type="number" step="0.01" placeholder="Price">
+
+              <input class="input" id="item-image" type="file" accept="image/png,image/jpeg,image/webp">
 
               <label class="muted">
                 <input type="checkbox" id="requires-booking">
                 Requires booking
               </label>
 
-              <button class="btn gold" type="submit">
-                Save Item
-              </button>
+              <button class="btn gold" type="submit">Save Item</button>
             </form>
 
             <div id="item-message" class="muted" style="margin-top:10px"></div>
@@ -70,10 +67,8 @@
           <div class="card">
             <h2>Safety checklist</h2>
             <p class="muted">
-              Image uploads must go through Worker/R2 signed routes.
-              Payout changes require verification.
-              Customer data is minimal.
-              Every action is logged.
+              Image uploads go through Worker/R2. Payout changes require verification.
+              Customer data is minimal. Every action should be logged.
             </p>
           </div>
         </div>
@@ -121,10 +116,7 @@
     }
 
     async function fetchDashboard() {
-      const res = await fetch(`${API_BASE}/api/dashboard/${TENANT_ID}`, {
-        cache: "no-store"
-      });
-
+      const res = await fetch(`${API_BASE}/api/dashboard/${TENANT_ID}`, { cache: "no-store" });
       const data = await res.json();
 
       if (!res.ok || data.status === "error") {
@@ -137,9 +129,7 @@
     async function createItem(payload) {
       const res = await fetch(`${API_BASE}/api/items`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
 
@@ -161,13 +151,17 @@
       }
 
       el.innerHTML = items.map((item) => `
-        <div class="notice" style="margin-bottom:10px">
+        <div class="notice" style="margin-bottom:14px">
+          ${
+            item.image_url
+              ? `<img src="${item.image_url}" alt="${item.name}" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:10px">`
+              : ""
+          }
+
           <strong>${item.name}</strong><br>
 
           <span class="muted">
-            ${item.item_type} ·
-            ${item.category || "General"} ·
-            ${money(item.price)}
+            ${item.item_type} · ${item.category || "General"} · ${money(item.price)}
           </span><br>
 
           <span class="muted">
@@ -189,16 +183,10 @@
       el.innerHTML = bookings.map((b) => `
         <div class="notice" style="margin-bottom:10px">
           <strong>${b.item_name || "Booking"}</strong><br>
-
           <span class="muted">
-            Status: ${b.booking_status || "created"}
-            · Payment: ${b.payment_status || "pending"}
-            · ${money(b.total_amount)}
+            Status: ${b.booking_status || "created"} · Payment: ${b.payment_status || "pending"} · ${money(b.total_amount)}
           </span><br>
-
-          <span class="muted">
-            Ref: ${b.booking_id}
-          </span>
+          <span class="muted">Ref: ${b.booking_id}</span>
         </div>
       `).join("");
     }
@@ -214,16 +202,10 @@
       el.innerHTML = orders.map((o) => `
         <div class="notice" style="margin-bottom:10px">
           <strong>${o.item_summary || "Order"}</strong><br>
-
           <span class="muted">
-            Fulfilment: ${o.fulfilment_status || "created"}
-            · Payment: ${o.payment_status || "pending"}
-            · ${money(o.total_amount)}
+            Fulfilment: ${o.fulfilment_status || "created"} · Payment: ${o.payment_status || "pending"} · ${money(o.total_amount)}
           </span><br>
-
-          <span class="muted">
-            Ref: ${o.order_id}
-          </span>
+          <span class="muted">Ref: ${o.order_id}</span>
         </div>
       `).join("");
     }
@@ -231,26 +213,16 @@
     async function initDashboard() {
       try {
         const data = await fetchDashboard();
-
         const tenant = data.tenant || {};
         const stats = data.stats || {};
 
         document.title = `${tenant.business_name || "Dashboard"} | Sale Company`;
+        document.getElementById("dash-title").textContent = `${tenant.business_name || "Business"} operations`;
 
-        document.getElementById("dash-title").textContent =
-          `${tenant.business_name || "Business"} operations`;
-
-        document.getElementById("gross-value").textContent =
-          money(stats.gross_value);
-
-        document.getElementById("total-bookings").textContent =
-          stats.total_bookings || 0;
-
-        document.getElementById("pending-bookings").textContent =
-          stats.pending_bookings || 0;
-
-        document.getElementById("total-orders").textContent =
-          stats.total_orders || 0;
+        document.getElementById("gross-value").textContent = money(stats.gross_value);
+        document.getElementById("total-bookings").textContent = stats.total_bookings || 0;
+        document.getElementById("pending-bookings").textContent = stats.pending_bookings || 0;
+        document.getElementById("total-orders").textContent = stats.total_orders || 0;
 
         document.getElementById("payment-mode").textContent =
           `Payment mode: ${tenant.payment_mode || "sale_unified"} · WhatsApp mode: ${tenant.whatsapp_mode || "platform_unified"}`;
@@ -258,10 +230,9 @@
         renderItems(data.items || []);
         renderBookings(data.bookings || []);
         renderOrders(data.orders || []);
-
       } catch (error) {
-        document.getElementById("dash-title").textContent =
-          "Dashboard failed to load";
+        document.getElementById("dash-title").textContent = "Dashboard failed to load";
+        document.getElementById("items-list").innerHTML = `<p class="muted">${error.message}</p>`;
       }
     }
 
@@ -271,6 +242,31 @@
       const message = document.getElementById("item-message");
 
       try {
+        message.textContent = "Uploading image...";
+
+        let imageUrl = null;
+        const imageFile = document.getElementById("item-image").files[0];
+
+        if (imageFile) {
+          const uploadForm = new FormData();
+          uploadForm.append("file", imageFile);
+          uploadForm.append("tenant_id", TENANT_ID);
+          uploadForm.append("upload_type", "items");
+
+          const uploadRes = await fetch(`${API_BASE}/api/upload`, {
+            method: "POST",
+            body: uploadForm
+          });
+
+          const uploadData = await uploadRes.json();
+
+          if (!uploadRes.ok || uploadData.status === "error") {
+            throw new Error(uploadData.message || "Upload failed");
+          }
+
+          imageUrl = uploadData.public_url;
+        }
+
         message.textContent = "Saving item...";
 
         await createItem({
@@ -280,15 +276,14 @@
           description: document.getElementById("item-description").value,
           category: document.getElementById("item-category").value,
           price: Number(document.getElementById("item-price").value || 0),
-          requires_booking: document.getElementById("requires-booking").checked ? 1 : 0
+          requires_booking: document.getElementById("requires-booking").checked ? 1 : 0,
+          image_url: imageUrl
         });
 
         message.textContent = "Item saved successfully.";
-
         document.getElementById("item-form").reset();
 
         await initDashboard();
-
       } catch (error) {
         message.textContent = error.message;
       }
