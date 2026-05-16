@@ -33,6 +33,8 @@
         <div class="metric"><span class="muted">Bookings</span><br><strong id="total-bookings">0</strong></div>
         <div class="metric"><span class="muted">Pending Bookings</span><br><strong id="pending-bookings">0</strong></div>
         <div class="metric"><span class="muted">Orders</span><br><strong id="total-orders">0</strong></div>
+        <div class="metric"><span class="muted">Paid Revenue</span><br><strong id="paid-revenue">$0</strong></div>
+        <div class="metric"><span class="muted">Merchant Net</span><br><strong id="merchant-net">$0</strong></div>
       </div>
 
       <section class="section">
@@ -99,6 +101,25 @@
           <div class="card">
             <h2>Payment setup</h2>
             <p class="muted" id="payment-mode">Loading payment mode...</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="grid">
+          <div class="card">
+            <h2>Payments</h2>
+            <div id="payments-list" class="muted">Loading payments...</div>
+          </div>
+
+          <div class="card">
+            <h2>Payout Summary</h2>
+            <p class="muted">
+              Paid revenue: <strong id="payout-paid-revenue">$0</strong><br>
+              Platform fees: <strong id="payout-platform-fees">$0</strong><br>
+              Merchant net: <strong id="payout-merchant-net">$0</strong><br>
+              Pending payments: <strong id="payout-pending-payments">0</strong>
+            </p>
           </div>
         </div>
       </section>
@@ -426,11 +447,47 @@
       `).join("");
     }
 
+    function renderPayments(payments) {
+      const el = document.getElementById("payments-list");
+
+      if (!payments || payments.length === 0) {
+        el.innerHTML = `<p class="muted">No payments yet.</p>`;
+        return;
+      }
+
+      el.innerHTML = payments.map((p) => `
+        <div class="notice" style="margin-bottom:10px">
+          <strong>${money(p.amount)}</strong><br>
+
+          <span class="muted">
+            Status: ${p.status || "created"}
+            · Fee: ${money(p.platform_fee)}
+            · Merchant Net: ${money(p.merchant_net)}
+          </span><br>
+
+          <span class="muted">
+            Ref: ${p.paynow_reference || p.transaction_id}
+          </span><br>
+
+          <span class="muted">
+            ${p.booking_id ? "Booking: " + p.booking_id : ""}
+            ${p.order_id ? "Order: " + p.order_id : ""}
+          </span><br>
+
+          <span class="muted">
+            ${p.customer_name || ""}
+            ${p.customer_phone ? " · " + p.customer_phone : ""}
+          </span>
+        </div>
+      `).join("");
+    }
+
     async function initDashboard() {
       try {
         const data = await fetchDashboard();
         const tenant = data.tenant || {};
         const stats = data.stats || {};
+        const paymentStats = data.payment_stats || {};
 
         document.title = `${tenant.business_name || "Dashboard"} | Sale Company`;
         document.getElementById("dash-title").textContent = `${tenant.business_name || "Business"} operations`;
@@ -440,12 +497,21 @@
         document.getElementById("pending-bookings").textContent = stats.pending_bookings || 0;
         document.getElementById("total-orders").textContent = stats.total_orders || 0;
 
+        document.getElementById("paid-revenue").textContent = money(paymentStats.paid_revenue);
+        document.getElementById("merchant-net").textContent = money(paymentStats.merchant_net);
+
+        document.getElementById("payout-paid-revenue").textContent = money(paymentStats.paid_revenue);
+        document.getElementById("payout-platform-fees").textContent = money(paymentStats.platform_fees);
+        document.getElementById("payout-merchant-net").textContent = money(paymentStats.merchant_net);
+        document.getElementById("payout-pending-payments").textContent = paymentStats.pending_payments || 0;
+
         document.getElementById("payment-mode").textContent =
           `Payment mode: ${tenant.payment_mode || "sale_unified"} · WhatsApp mode: ${tenant.whatsapp_mode || "platform_unified"}`;
 
         renderItems(data.items || []);
         renderBookings(data.bookings || []);
         renderOrders(data.orders || []);
+        renderPayments(data.payments || []);
       } catch (error) {
         document.getElementById("dash-title").textContent = "Dashboard failed to load";
         document.getElementById("items-list").innerHTML = `<p class="muted">${error.message}</p>`;
